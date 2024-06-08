@@ -5,6 +5,7 @@ export function currentInfo() {
   const currentTime = document.getElementById("time");
   const currentDate = document.getElementById("date");
   const currentHumidity = document.getElementById("humidity");
+  const futureWeatherForecast = document.getElementById("future-forecast");
 
   // Array für die Tage und Monate
   const dateArr = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
@@ -30,6 +31,7 @@ export function currentInfo() {
 
   getWeatherData();
 
+  // Ganze Woche Wetter Anzeige
   function getWeatherData() {
       navigator.geolocation.getCurrentPosition((success) => {
           let { latitude, longitude } = success.coords;
@@ -40,7 +42,7 @@ export function currentInfo() {
               .then(res => res.json())
               .then(data => {
                   console.log(data);
-                  showWeatherData(data);
+                  showWeatherData2(data);
               })
               .catch(err => {
                   console.error('Error fetching weather data:', err);
@@ -52,6 +54,7 @@ export function currentInfo() {
   }
 
 
+  // Derzeitige Wetter Anzeige
   getWeatherData2()
   function getWeatherData2() {
     navigator.geolocation.getCurrentPosition((success) => {
@@ -64,6 +67,7 @@ export function currentInfo() {
             .then(data => {
                 console.log(data);
                 showWeatherData(data);
+                
             })
             .catch(err => {
                 console.error('Error fetching weather data:', err);
@@ -87,16 +91,45 @@ export function currentInfo() {
           ${data.name}
       </div>`
 
-
-
-
           weatherItems.innerHTML =
               `<div class="weather-items" id="weather-items">
                   <div class="Temperatur" id="Temperatur">${temp}°</div>
                   <div id="humidity">Luftfeuchtigkeit: ${humidity} %</div>
               </div>`;
+
+      
       } else {
           console.error('Weather data is missing required properties:', data);
       }
+
+
+  }
+
+  
+  function showWeatherData2 (data){
+    let otherDayForecast = "";
+
+
+      for(let i = 1; i<data.daily.length; i++) {
+
+        const dayDate = new Date(data.daily[i].dt*1000);
+        const dayName = dateArr[dayDate.getDay()];
+        const icon = data.daily[i].weather[0].icon;
+        const tempDay = data.daily[i].temp.day;
+        const tempNight = data.daily[i].temp.night;
+
+
+        otherDayForecast +=` <div class="weather-forecast-item" id="t-temp">
+            <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather icon" class="w-icon">
+            <div class="day">${dayName}</div>
+            <div class="temp">Tag ${tempDay} °</div>
+            <div class="temp">Nacht ${tempNight} °</div>
+        </div>`
+
+      }
+      
+      futureWeatherForecast.innerHTML = otherDayForecast;
   }
 }
+
+//http-server -S -C cert.pem -K key.pem
