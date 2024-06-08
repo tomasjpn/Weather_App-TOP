@@ -77,6 +77,11 @@ body {
     font-weight: 150;
 }
 
+/* °-Symbol in orange färben */
+.degree {
+    color:rgb(247, 108, 27);
+}
+
 .date-container{
     display: flex;
     justify-content: space-between;
@@ -109,19 +114,38 @@ body {
 
 }
 
+.future-forecast .w-icon {
+    align-items: center;
+    justify-content: center;
+
+}
+
 .future-forecast .day{
+    display: flex;
+    text-align: center;
+    
     align-items: center;
     justify-content: center;
     background: rgba(24,24,27,0.1);
     padding: 6px;
     border-radius: 15px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .future-forecast .temp {
     margin-top: 10px;
 }
 
+.future-forecast .date {
+    display: flex;
+    font-weight: 400;
+    color:rgb(247, 108, 27);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+
+}
 
 /*Resizing für Smartphones*/
 
