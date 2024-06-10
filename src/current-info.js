@@ -1,4 +1,7 @@
+import { addLocation } from "./change-location";
+
 export function currentInfo() {
+    addLocation
     const timeZone = document.getElementById("time-zone");
     const countryCity = document.getElementById("country-city");
     const weatherItems = document.getElementById("weather-items");
@@ -105,5 +108,8 @@ export function currentInfo() {
         }
         futureWeatherForecast.innerHTML = otherDayForecast; 
     }
+
+    addLocation();
   }
   
+  //http-server -S -C cert.pem -K key.pem

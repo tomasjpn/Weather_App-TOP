@@ -40,6 +40,8 @@ body {
     }
 }
 
+
+
 /*Container = alle Elemente*/
 .container {
     padding: 90px 90px; /* Padding wird angewendet */
@@ -57,15 +59,86 @@ body {
 
 }
 
-.location-container{
-    text-align: center;
+.Search-button-elm{
+    margin-left: auto;
+    transform: scale(0.7);
+
 }
 
+#city-input{
+    font-size: 25px;
+    font-weight: 300px;
+    background: transparent;
+    border: 2px solid rgb(252, 136, 68);
+    color: aliceblue; 
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+#city-input:focus {
+    border-color: white; /* Rahmenfarbe auf Weiß ändern, wenn fokussiert */
+    outline: none; /* Standard-Fokusrahmen entfernen */
+}
+
+#city-input:hover{
+    border-color: white; 
+    transition: border-color 0.3s;/* Rahmenfarbe auf Weiß ändern beim Hovern */
+}
+
+#search-btn:hover {
+    background-color: rgb(24,24,27,0.1);
+    transition: background-color 0.3s;
+}
+
+#search-btn {
+    background-color: rgb(252, 136, 68);
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 40px;
+    font-size: 15px;
+    font-weight: 300px;
+    padding: 10px;
+
+}
+
+.location-searchbar{
+    margin-left: auto;
+    font-size: 25px;
+    font-weight: 300px;
+}
+
+.location-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.location-top {
+    display: flex;
+    margin-bottom: 0;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.location-container .time-zone{
+    margin-left: auto;
+    justify-content: center;
+    align-items: center;
+}
 
 .location-container .country-city{
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
     font-size: 20px;
     font-weight: 600;
 }
+
 
 .weather-items{
     text-align: center;
