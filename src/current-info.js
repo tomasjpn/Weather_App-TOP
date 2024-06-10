@@ -1,7 +1,4 @@
-import { addLocation } from "./change-location";
-
 export function currentInfo() {
-    addLocation
     const timeZone = document.getElementById("time-zone");
     const countryCity = document.getElementById("country-city");
     const weatherItems = document.getElementById("weather-items");
@@ -9,73 +6,104 @@ export function currentInfo() {
     const currentDate = document.getElementById("date");
     const currentHumidity = document.getElementById("humidity");
     const futureWeatherForecast = document.getElementById("future-forecast");
-  
-    //Array für WochenTage sowie Monate
+    const locationSearchbar = document.getElementById("location-searchbar");
+    const locationTop = document.getElementById("location-top");
+
     const dateArr = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
     const monthArr = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-  
-    //API Key
+
     const apiKey = "1ab9663b28c7c70557cf8779d5ca5c79";
-  
-    
+
     let latitude, longitude;
     let cityName, countryName;
-  
-    //Intervall, das den aktuellen Datum sowie Uhrzeit jeweils nach 1er Sekunde aktualisiert
+
     setInterval(() => {
         const time = new Date();
         const month = time.getMonth();
         const date = time.getDate();
         const day = time.getDay();
-        const hour = ('0' + time.getHours()).slice(-2); // Füge ein führendes Nullzeichen hinzu
-    const minutes = ('0' + time.getMinutes()).slice(-2); // Füge ein führendes Nullzeichen hinzu
+        const hour = ('0' + time.getHours()).slice(-2);
+        const minutes = ('0' + time.getMinutes()).slice(-2);
 
         currentTime.innerHTML = `${hour}:${minutes}`;
         currentDate.innerHTML = `${dateArr[day]}, ${date} ${monthArr[month]}`;
     }, 1000);
 
+    // Initiale Erstellung des Such-Inputs
+    const searchDiv = document.createElement('div');
+    searchDiv.classList.add('Search-button-elm');
+    searchDiv.innerHTML = `
+        <input type="text" id="city-input" placeholder="Stadt eingeben">
+        <button id="search-btn">Suche</button>
+    `;
+    searchDiv.style.display = 'none'; // Initially hidden
+    locationTop.appendChild(searchDiv);
 
-    // GeoLocation vom Benutzer erfassen
-    navigator.geolocation.getCurrentPosition((success) => { // Success Callback-Funktion, die success als ein Argument erhält, das wiederum ein Objekt mit den Informationen über die Posiion des Benutzers enthält 
-        latitude = success.coords.latitude; // Die Breitengrad-Koordinate der aktuellen Position.
-        longitude = success.coords.longitude; // Die Längengrad-Koordinate der aktuellen Position.
-        getWeatherData2();
+    function addLocation() {
+        if (searchDiv.style.display === 'none') {
+            searchDiv.style.display = 'block';
+            locationSearchbar.style.display = 'none'; // Hide the "+" button
+        } else {
+            searchDiv.style.display = 'none';
+            locationSearchbar.style.display = 'block'; // Show the "+" button
+        }
+    }
+
+    document.getElementById("search-btn").addEventListener('click', () => {
+        const cityInput = document.getElementById("city-input");
+        const city = cityInput.value;
+        if (city) {
+            getWeatherDataByCity(city);
+            searchDiv.style.display = 'none'; // Hide after search
+            locationSearchbar.style.display = 'block'; // Show the "+" button again
+        }
+    });
+
+    locationSearchbar.addEventListener("click", addLocation);
+
+    navigator.geolocation.getCurrentPosition((success) => {
+        latitude = success.coords.latitude;
+        longitude = success.coords.longitude;
+        getWeatherDataByCoords(latitude, longitude);
     }, error => {
         console.error('Error getting location:', error);
     });
-  
-    function getWeatherData() { // Funktion, die eine HTTP-Anfrage an die angegebene URL sendet.
-        fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`)
-            .then(res => res.json()) // Verarbeitet die Antwort (res) und konvertiert sie in ein JSON-Objekt.
-            .then(data => {
-                showWeatherData2(data); // Wetterdaten werden angezeigt
-                console.log(data) //Wetterdaten aus der API
-            })
-            .catch(err => {
-                console.error('Error fetching weather data:', err);
-            });
-    }
-  
-    function getWeatherData2() {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`)
+
+    function getWeatherDataByCoords(lat, lon) {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`)
             .then(res => res.json())
             .then(data => {
-                cityName = data.name; // Stadtname aus den Wetterdaten abrufen
-                countryName = data.sys.country; // Landesname aus den Wetterdaten abrufen
+                cityName = data.name;
+                countryName = data.sys.country;
                 showWeatherData(data);
-                getWeatherData();  // Erst hier die One Call API abfragen, um sicherzustellen, dass cityName und countryName gesetzt sind
+                getWeatherData(lat, lon);
                 console.log(data);
             })
             .catch(err => {
                 console.error('Error fetching weather data:', err);
             });
     }
-  
+
+    function getWeatherDataByCity(city) {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`)
+            .then(res => res.json())
+            .then(data => {
+                latitude = data.coord.lat;
+                longitude = data.coord.lon;
+                cityName = data.name;
+                countryName = data.sys.country;
+                showWeatherData(data);
+                getWeatherData(latitude, longitude);
+                console.log(data);
+            })
+            .catch(err => {
+                console.error('Error fetching weather data:', err);
+            });
+    }
 
     function showWeatherData(data) {
-           // Objekt aus Data muss main enthalten, ob humidity sowie temp definiert sind
         if (data.main && typeof data.main.humidity !== 'undefined' && typeof data.main.temp !== 'undefined') {
-            let { humidity, temp } = data.main; // Destrukturierung vom Objekt -> Eigenschaften aus dem Objekt direkt in Variablen zuweisen
+            let { humidity, temp } = data.main;
             timeZone.innerHTML = `<div class="time-zone" id="time-zone">${countryName}</div>`;
             countryCity.innerHTML = `<div class="country-city" id="country-city">${cityName}</div>`;
             weatherItems.innerHTML = `<div class="weather-items" id="weather-items">
@@ -86,15 +114,26 @@ export function currentInfo() {
             console.error('Weather data is missing required properties:', data);
         }
     }
-  
+
+    function getWeatherData(lat, lon) {
+        fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`)
+            .then(res => res.json())
+            .then(data => {
+                showWeatherData2(data);
+                console.log(data);
+            })
+            .catch(err => {
+                console.error('Error fetching weather data:', err);
+            });
+    }
+
     function showWeatherData2(data) {
         let otherDayForecast = "";
-        for (let i = 1; i < data.daily.length; i++) { //Iterrieren durch das Array 
-
-            const dayDate = new Date(data.daily[i].dt * 1000); //Zeit wird von Sekunden in Millisekunden konvertiert
+        for (let i = 1; i < data.daily.length; i++) {
+            const dayDate = new Date(data.daily[i].dt * 1000);
             const dayName = dateArr[dayDate.getDay()];
             const dayOfMonth = dayDate.getDate();
-            const monthNum = dayDate.getMonth() + 1; // Um 1 erhöhen, sonst wäre der Januar als 0 dargestellt
+            const monthNum = dayDate.getMonth() + 1;
             const icon = data.daily[i].weather[0].icon;
             const tempDay = data.daily[i].temp.day;
             const tempNight = data.daily[i].temp.night;
@@ -104,12 +143,8 @@ export function currentInfo() {
                 <div class="day">${dayName}</div>
                 <div class="temp">Tag ${tempDay} °</div>
                 <div class="temp">Nacht ${tempNight} °</div>
-            </div>`;  //Die Variable otherDayForecast wird nach jeder Iterrierung mit weiteren  Wetter-Tag ergänzt
+            </div>`;
         }
-        futureWeatherForecast.innerHTML = otherDayForecast; 
+        futureWeatherForecast.innerHTML = otherDayForecast;
     }
-
-    addLocation();
-  }
-  
-  //http-server -S -C cert.pem -K key.pem
+}
