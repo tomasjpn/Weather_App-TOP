@@ -2,6 +2,7 @@
 import { updateCurrentTime } from "./current-info";
 import { getLocation } from "./geolocation";
 import { setupSearch } from "./search";
+import './hourlyForecast'; // Neu hinzugefügt
 import "./styles.css";
 
 // DOM wird erstmal vollständig geladen

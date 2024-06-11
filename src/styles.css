@@ -165,10 +165,43 @@ body {
     margin-left: 10px;
 }
 
+.hourly-forecast-container {
+    display: flex;
+    justify-content: flex-start;
+
+    margin: 1px;
+    margin-top: 40px;
+    margin-bottom: 0px;
+    background: rgba(24,24,27,0.1);
+    padding: 25px;
+    border-radius: 15px;
+    overflow: auto;
+
+}
+
+.hourly-forecast-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Zentriert die Kinder-Elemente */
+    margin: 0 10px; /* Außenabstand zwischen den stündlichen Vorhersagen */
+    text-align: center;
+}
+
+.hourly-forecast-container .w-icon{
+    transform: scale(0.7);
+}
+
+.text-Vorhersage{
+    margin-right: auto;
+    margin: 20px 90px;
+    padding-bottom: 0;
+    margin-bottom: 10px;
+    font-weight: 200px;
+
+}
 
 .future-forecast {    
-    margin: 20px 90px; /* Füge einen Außenabstand hinzu, um den Rand nicht zu berühren */
-    padding: 25px; /* Padding wird angewendet */
+    margin: 0px 90px; /* Füge einen Außenabstand hinzu, um den Rand nicht zu berühren */
 
     overflow: auto;
 
@@ -177,11 +210,12 @@ body {
     padding: 25px;
     border-radius: 15px;
     display: flex;
+    
 }
 
 .future-forecast .weather-forecast-item{
     align-items: center;
-    justify-content: center;
+    justify-content: flex;
     margin: 0 20px;
     text-align: center;
 
@@ -189,7 +223,7 @@ body {
 
 .future-forecast .w-icon {
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
 }
 
@@ -224,9 +258,7 @@ body {
 
 @media only screen and (max-width:730px){
     .future-forecast{
-        justify-content: start;
-        align-items: none;
-        overflow: scroll;
+        justify-content: flex-start;
         padding: 70px;
         margin: 5px 40px;
     }

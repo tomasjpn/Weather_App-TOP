@@ -1,5 +1,6 @@
 // API-Aufruf für die Wetterabfrage und Weiterverarbeitung
 
+import { showHourlyForecast } from "./hourlyForecast";
 import { showWeatherData, showWeatherData2 } from "./weatherDisplay";
 
 //API Key 
@@ -45,6 +46,7 @@ function getWeatherData(lat, lon) {
         .then(res => res.json())
         .then(data => {
             showWeatherData2(data);
+            showHourlyForecast(data); // Daten aus der API an showHourlyForecast weitergeben
             console.log(data);
         })
         .catch(err => {

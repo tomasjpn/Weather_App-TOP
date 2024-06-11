@@ -42,5 +42,5 @@ export function showWeatherData2(data) {
             <div class="temp">Nacht ${tempNight} °</div>
         </div>`;
     }
-    futureWeatherForecast.innerHTML = otherDayForecast;
+    futureWeatherForecast.innerHTML += otherDayForecast;
 }
