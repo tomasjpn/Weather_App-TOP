@@ -1,5 +1,12 @@
 
-import { currentInfo } from "./current-info";
+import { updateCurrentTime } from "./current-info";
+import { getLocation } from "./geolocation";
+import { setupSearch } from "./search";
 import "./styles.css";
 
-currentInfo();
+// DOM wird erstmal vollständig geladen
+document.addEventListener('DOMContentLoaded', () => {
+    updateCurrentTime(); // Aktualiseren aktuellen Zeit + Datum
+    setupSearch() // Suchfunktion
+    getLocation(); // Standort + Wetterdaten abrufen
+});
