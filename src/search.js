@@ -38,5 +38,17 @@ export function setupSearch() {
         }
     });
 
+    document.getElementById("city-input").addEventListener("keyup", (event) => {
+        if (event.key === "Enter") {
+            const cityInput = document.getElementById("city-input");
+            const city = cityInput.value;
+            if (city) {
+                getWeatherDataByCity(city);
+                searchDiv.style.display = 'none';
+                locationSearchbar.style.display = 'block';
+            }
+        }
+    });
+
     locationSearchbar.addEventListener("click", addLocation);
 }

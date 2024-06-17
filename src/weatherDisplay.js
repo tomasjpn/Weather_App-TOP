@@ -26,7 +26,7 @@ export function showWeatherData2(data) {
     const dateArr = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
 
     let otherDayForecast = "";
-    for (let i = 1; i < data.daily.length; i++) { // Itterrieren durch das Array und nach jeder Iterrierung wird ein Tag erstellt
+    for (let i = 1; i <= 7; i++) { // Itterrieren durch das Array und nach jeder Iterrierung wird ein Tag erstellt
         const dayDate = new Date(data.daily[i].dt * 1000);
         const dayName = dateArr[dayDate.getDay()];
         const dayOfMonth = dayDate.getDate();
@@ -42,5 +42,5 @@ export function showWeatherData2(data) {
             <div class="temp">Nacht ${tempNight} °</div>
         </div>`;
     }
-    futureWeatherForecast.innerHTML += otherDayForecast;
+    futureWeatherForecast.innerHTML = otherDayForecast;
 }
