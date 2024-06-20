@@ -8,6 +8,7 @@ const apiKey = "1ab9663b28c7c70557cf8779d5ca5c79";
 // Funktion für den Aufruf der Wetterdaten aus den Koordinaten
 export async function getWeatherDataByCoords(lat, lon) { //Funktion muss mit Async deklariert werden, um await zu verwenden
     try { // Der Code-Block wird ausgeführt, falls nicht möglich -> catch err
+        
         // await wie Promise -> Der gesamte Code wird erst weiter geführt, wenn die fetch Anfrage fertig ist.
         const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`);
         const data = await res.json();
